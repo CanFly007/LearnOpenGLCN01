@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "072401HelloTransform", "072
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "072402HelloCamera", "072402HelloCamera\072402HelloCamera.vcxproj", "{43365C4E-D9D3-4E6F-89BA-DE8E1AF3E139}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "072403HelloLight", "072403HelloLight\072403HelloLight.vcxproj", "{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,14 @@ Global
 		{43365C4E-D9D3-4E6F-89BA-DE8E1AF3E139}.Release|x64.Build.0 = Release|x64
 		{43365C4E-D9D3-4E6F-89BA-DE8E1AF3E139}.Release|x86.ActiveCfg = Release|Win32
 		{43365C4E-D9D3-4E6F-89BA-DE8E1AF3E139}.Release|x86.Build.0 = Release|Win32
+		{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}.Debug|x64.ActiveCfg = Debug|x64
+		{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}.Debug|x64.Build.0 = Debug|x64
+		{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}.Debug|x86.ActiveCfg = Debug|Win32
+		{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}.Debug|x86.Build.0 = Debug|Win32
+		{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}.Release|x64.ActiveCfg = Release|x64
+		{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}.Release|x64.Build.0 = Release|x64
+		{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}.Release|x86.ActiveCfg = Release|Win32
+		{1A81FFB5-8E5A-4E34-912D-DE5841A47C23}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
