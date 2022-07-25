@@ -18,25 +18,32 @@ struct Material
 };
 uniform Material material;
 
-
-//uniform sampler2D diffuseTex;
+struct PointLight
+{
+	vec3 position;
+	vec3 color;
+};
+uniform PointLight pointLights[4];
 
 void main()
 {
 	vec3 diffuseColor = vec3(texture(material.diffuseTex, uv).xyz);
-
-	vec3 ambient = 0.1 * lightColor * diffuseColor;
+	vec3 specMask = vec3(texture(material.specularMaskTex, uv).xyz);	
 
 	vec3 normal = normalize(worldNormal);
-	vec3 lightDir = normalize(worldlightPos - worldPos);
-	vec3 diffuse = lightColor * max((dot(normal , lightDir)),0) * diffuseColor;
-
 	vec3 worldViewDir = normalize(worldViewPos - worldPos);
-	vec3 reflectDir = reflect(-lightDir , normal);
-	vec3 specMask = vec3(texture(material.specularMaskTex, uv).xyz);
-	vec3 specular = 0.5 * specMask * pow(max(dot(worldViewDir , reflectDir), 0), material.gloss);
 
-	vec3 result = ambient + diffuse + specular;
+	vec3 result = vec3(0,0,0);
+	for(int i = 0; i < 4; i++)
+	{
+		float distance = length(pointLights[i].position - worldPos);
+		float atten = 1 / (distance * distance * 0.3f);
+		vec3 lightDir = normalize(pointLights[i].position - worldPos);
+		vec3 pointDiffuse = pointLights[i].color * diffuseColor * max((dot(normal , lightDir)),0);
+		vec3 halfDir = normalize(lightDir + worldViewDir);
+		vec3 pointSpecular = pointLights[i].color * specMask * pow(max(dot(normal,halfDir),0),material.gloss);
+		result += (pointDiffuse + pointSpecular) * atten;
+	}
 
 	FragColor = vec4(result , 1.0);
 }

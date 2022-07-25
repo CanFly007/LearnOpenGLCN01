@@ -97,6 +97,18 @@ void SetViewProjectionMat4(Shader& shader)
 	glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
 }
 
+void SetUniformValue(unsigned int program, glm::vec3* pointLightPositions)
+{
+	glUniform3fv(glGetUniformLocation(program, "pointLights[0].position"), 1, glm::value_ptr(pointLightPositions[0]));
+	glUniform3fv(glGetUniformLocation(program, "pointLights[1].position"), 1, glm::value_ptr(pointLightPositions[1]));
+	glUniform3fv(glGetUniformLocation(program, "pointLights[2].position"), 1, glm::value_ptr(pointLightPositions[0]));
+	glUniform3fv(glGetUniformLocation(program, "pointLights[3].position"), 1, glm::value_ptr(pointLightPositions[0]));
+	glUniform3f(glGetUniformLocation(program, "pointLights[0].color"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(program, "pointLights[1].color"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(program, "pointLights[2].color"), 1.0f, 1.0f, 1.0f);
+	glUniform3f(glGetUniformLocation(program, "pointLights[3].color"), 1.0f, 1.0f, 1.0f);
+}
+
 void Mouse_Callback(GLFWwindow* window, double xpos, double ypos)
 {
 	if (firstMouse)
@@ -270,6 +282,8 @@ int main()
 			pointLightPositions[i].x += cos(currentFrame) / 10 * (i * 0.1);
 			pointLightPositions[i].z += sin(currentFrame) / 10 * (i * 0.1);
 		}
+
+		SetUniformValue(modelShader.program, pointLightPositions);
 
 		glUniform3f(glGetUniformLocation(modelShader.program, "material.specularColor"), 0.5f, 0.5f, 0.5f);
 		glUniform1f(glGetUniformLocation(modelShader.program, "material.gloss"), 256.0f);
