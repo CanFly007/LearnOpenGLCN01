@@ -8,6 +8,8 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 
+#include "model.h"
+
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 bool firstMouse = true;
 float deltaTime = 0.0f;//当前帧与上一帧的时间差
@@ -218,6 +220,8 @@ int main()
 	Shader modelShader = Shader("ModelObj.vs", "ModelObj.fs");
 	Shader lightShader = Shader("LightObj.vs", "LightObj.fs");
 
+	Model ourModel("../Texture/nanosuit/nanosuit.obj");
+
 	//VAO：之所以要VAO是因为下面Draw的时候，不然要BindBuffer各种和Element
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
@@ -300,15 +304,16 @@ int main()
 		glBindVertexArray(VAO);
 
 		SetViewProjectionMat4(modelShader);
-		for (unsigned int i = 0; i < 10; i++)
-		{
-			glm::mat4 model;
-			model = glm::translate(model, cubePositions[i]);
-			float angle = 20.0f * i;
-			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-			glUniformMatrix4fv(glGetUniformLocation(modelShader.program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
+		//for (unsigned int i = 0; i < 10; i++)
+		//{
+		//	glm::mat4 model;
+		//	model = glm::translate(model, cubePositions[i]);
+		//	float angle = 20.0f * i;
+		//	model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
+		//	glUniformMatrix4fv(glGetUniformLocation(modelShader.program, "model"), 1, GL_FALSE, glm::value_ptr(model));
+		//	glDrawArrays(GL_TRIANGLES, 0, 36);
+		//}
+		ourModel.Draw(modelShader);
 
 		//灯可视化到场景中
 		glUseProgram(lightShader.program);
