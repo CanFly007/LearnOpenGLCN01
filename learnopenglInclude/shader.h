@@ -12,20 +12,22 @@ class Shader
 {
 public:
     unsigned int program;
-	Shader(const char* vertexPath, const char* fragmentPath);
+	Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
     int CompileShader(const char* shaderCode, int shaderType);//有的时候不想新建文件，在main中用字符串写简单shader即可
 private:
     void CheckShaderCompileSuccess(unsigned int shader);
     void CheckProgramLinkSuccess(unsigned int program);
 };
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath)
 {
     // 1. 从文件路径中获取顶点/片段着色器
     std::string vertexCode;
     std::string fragmentCode;
     std::ifstream vShaderFile;
     std::ifstream fShaderFile;
+
+    std::string geometryCode;
     // 保证ifstream对象可以抛出异常：
     vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -44,6 +46,16 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
         // 转换数据流到string
         vertexCode = vShaderStream.str();
         fragmentCode = fShaderStream.str();
+
+        if (geometryPath != nullptr)
+        {
+            std::ifstream gShaderFile;
+            gShaderFile.open(geometryPath);
+            std::stringstream gShaderStream;
+            gShaderStream << gShaderFile.rdbuf();
+            gShaderFile.close();
+            geometryCode = gShaderStream.str();
+        }
     }
     catch (std::ifstream::failure e)
     {
@@ -56,14 +68,25 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 
     unsigned int fragShader = CompileShader(fShaderCode, GL_FRAGMENT_SHADER);
 
+    unsigned int geometryShader;
+    if (geometryPath != nullptr)
+    {
+        const char* gShaderCode = geometryCode.c_str();
+        geometryShader = CompileShader(gShaderCode, GL_GEOMETRY_SHADER);
+    }
+
     program = glCreateProgram();
     glAttachShader(program, vertexShader);
     glAttachShader(program, fragShader);
+    if (geometryPath != nullptr)
+        glAttachShader(program, geometryShader);
     glLinkProgram(program);
     CheckProgramLinkSuccess(program);
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragShader);
+    if (geometryPath != nullptr)
+        glDeleteShader(geometryShader);
 }
 
 int Shader::CompileShader(const char* shaderCode, int shaderType)
