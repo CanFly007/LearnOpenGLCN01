@@ -14,6 +14,9 @@ GLFWwindow* Init()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);//OpenGL版本和使用Core模式
+	//MSAA
+	glfwWindowHint(GLFW_SAMPLES, 4);
+
 	GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpengl", NULL, NULL);//窗口对象* window
 	if (window == NULL)
 	{
